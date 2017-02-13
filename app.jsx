@@ -1,16 +1,16 @@
 var PLAYERS = [
   {
-    name: "Jim Hoskins",
+    name: "Jim Carrey",
     score: 31,
     id: 1,
   },
   {
-    name: "Andrew Chalkley",
+    name: "Ken Pal",
     score: 35,
     id: 2,
   },
   {
-    name: "Alena Holligan",
+    name: "Jackie Chan",
     score: 42,
     id: 3,
   },
