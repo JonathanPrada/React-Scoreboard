@@ -16,6 +16,8 @@ var PLAYERS = [
   },
 ];
 
+var nextId = 4;
+  
 var AddPlayerForm = React.createClass({
     propTypes: {
       onAdd: React.PropTypes.func.isRequired,
@@ -28,7 +30,6 @@ var AddPlayerForm = React.createClass({
     },
   
     onNameChange: function(e) {
-      //console.log('onNameChange', e.target.value);
       this.setState({name: e.target.value});
     },
   
@@ -119,6 +120,7 @@ function Player(props) {
   return (
     <div className="player">
       <div className="player-name">
+        <a className="remove-player" onClick={props.onRemove}>X</a>
         {props.name}
       </div>
       <div className="player-score">
@@ -132,6 +134,7 @@ Player.propTypes = {
   name: React.PropTypes.string.isRequired,
   score: React.PropTypes.number.isRequired,
   onScoreChange: React.PropTypes.func.isRequired,
+  onRemove: React.PropTypes.func.isRequired,
 };
 
 var Application = React.createClass({
@@ -158,14 +161,29 @@ var Application = React.createClass({
     },
   
   onScoreChange: function (index, delta) {
-    console.log('onScoreChange', index, delta);
     this.state.players[index].score += delta;
     this.setState(this.state);
   },
     
-  onPlayerAdd: function() {
-  
-  }
+  onPlayerAdd: function(name) {
+    //Push the current name state passed into our players object
+    this.state.players.push({
+      name: name,
+      score: 0,
+      id: nextId,
+    });
+    //Render our latest state
+    this.setState(this.state);
+    //Increment the nextId var value by 1
+    nextId += 1;
+  },
+    
+  onRemovePlayer: function(index) {
+    //Get the players array and remove from 1 item from the index
+    this.state.players.splice(index, 1);
+    //Render our latest state
+    this.setState(this.state);
+  },
   
     render: function() {
         return (
@@ -177,6 +195,7 @@ var Application = React.createClass({
               return (
                 <Player 
                 onScoreChange={function (delta) {this.onScoreChange(index, delta)}.bind(this)}
+                onRemove={function() {this.onRemovePlayer(index)}.bind(this)}
                 name={player.name}
                 score={player.score}
                 key={player.id} />
