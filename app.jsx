@@ -18,6 +18,89 @@ var PLAYERS = [
 
 var nextId = 4;
   
+  
+//create our Stopwatch component
+//We will add this stop watch into the header
+var Stopwatch = React.createClass ({
+    //Implementing state in our component
+    getInitialState: function() {
+      //Returns an object
+      //We will use elapsed time to add our time passed from stopwatch
+      return {
+         running: false,
+         elapsedTime: 0,
+         previousTime: 0,
+      }
+    },
+  
+    //Call this method as soon as stopwatch added on dom
+    //Set interval will call our method every 180 milliseconds
+    componentDidMount: function() {
+       this.interval = setInterval(this.onTick, 180);
+    },
+    
+    //Call this method just before stopwatch removed from DOM
+    //Prevents memory leakage
+    componentWillUnmount: function() {
+       clearInterval(this.interval);
+    },
+  
+    //On tick method
+    onTick: function() {
+      if (this.state.running) {
+        var now = Date.now();
+        this.setState({
+        previousTime: now,
+        elapsedTime: this.state.elapsedTime + (now - this.state.previousTime),
+        });
+    }
+      console.log('onTick');
+    },
+  
+    //Implementing the methods triggered by the onClicks in our render function
+    onStart: function() {
+      this.setState({running: true,
+      previousTime: Date.now(),
+    }); 
+    },
+  
+    onStop: function() {
+      this.setState({running: false});
+    },
+  
+    onReset: function() {
+      this.setState({
+        elapsedTime: 0,
+        previousTime: Date.now(),
+    });
+    },
+  
+    //Render strictly for printing out the virtual dom
+    render: function () {
+    //return html markup
+    //Use ternary operator within a jsx expression to change markup
+    //With ternary operator, if state running, if true stop, if false stop
+    
+    //Store the time passed
+    var seconds = Math.floor(this.state.elapsedTime/1000);
+  
+  
+    return (
+        <div className="stopwatch">
+        <h2>Stopwatch</h2>
+        <div className="stopwatch-time">{ seconds }</div>
+        { 
+        this.state.running ? 
+        <button onClick={this.onStop}>Stop</button> 
+        :
+        <button onClick={this.onStart}>Start</button>
+        }
+        <button onClick={this.onReset}>reset</button>
+        </div>
+     );
+    }
+  });
+  
 var AddPlayerForm = React.createClass({
     propTypes: {
       onAdd: React.PropTypes.func.isRequired,
@@ -89,6 +172,7 @@ function Header(props) {
     <div className="header">
       <Stats players={props.players}/>
       <h1>{props.title}</h1>
+      <Stopwatch />
     </div>
   );
 }
