@@ -4,9 +4,9 @@ A Scoreboard for keeping tracking of players and points, with timing abilities.
 
 ## FILES
 
-app.css - This file is used to provide access to your database via a library of functions which can add, delete or query data in your database to another python program (a client program).
+app.css - This file is used to provide styling to the react app.
 
-app.jsx - this file is used to set up your database schema (the table representation of the data structure).
+app.jsx - this file is used to create the scoreboard application.
 
 index.html - Simple HTML file holding our application container, app.jsx appends our application to the container div.
 
